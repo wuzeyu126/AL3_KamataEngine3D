@@ -43,7 +43,6 @@ void GameScene::Draw() {
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(commandList);
 
-
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
