@@ -111,6 +111,7 @@
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="skyDome.cpp" />
     <ClCompile Include="WorldTransformEx.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +145,7 @@
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="MT3.h" />
     <ClInclude Include="scene\GameScene.h" />
+    <ClInclude Include="skyDome.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

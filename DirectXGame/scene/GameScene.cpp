@@ -18,6 +18,7 @@ GameScene::~GameScene() {
 	worldTransformBlocks_.clear();
 
 	delete debugCamera_;
+	delete skyDome_;
 }
 
 void GameScene::Initialize() {
@@ -29,8 +30,9 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 	textureHandle_ = TextureManager::Load("sample.png");
+	
 
-	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection_);
+	//PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection_);
 
 	debugCamera_ = new DebugCamera(1024, 720);
 
@@ -41,6 +43,12 @@ void GameScene::Initialize() {
 	const uint32_t kNumBlockHorizontal = 20;
 	const float kBlockWidth = 2.0f;
 	const float kBlockHeight = 2.0f;
+
+
+	modelSkyDome_ = Model::CreateFromOBJ("skyDome", true);
+	skyDome_ = new SkyDome;
+	skyDome_->Initialize(modelSkyDome_, &viewProjection_);
+
 
 	worldTransformBlocks_.resize(kNumBlockVirtical);
 	for (uint32_t i = 0; i < kNumBlockVirtical; ++i) {
@@ -94,6 +102,8 @@ void GameScene::Update() {
 			worldTransformBlock->UpdateMatrix();
 		}
 	}
+
+	skyDome_->Update();
 }
 
 void GameScene::Draw() {
@@ -130,6 +140,8 @@ void GameScene::Draw() {
 			modelBlock_->Draw(*worldTransformBlock, viewProjection_);
 		}
 	}
+
+	skyDome_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

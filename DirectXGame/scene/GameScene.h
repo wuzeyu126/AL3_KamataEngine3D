@@ -14,6 +14,7 @@
 #include "DebugCamera.h"
 #include "AxisIndicator.h"
 #include <cassert>
+#include "SkyDome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -61,6 +62,8 @@ private: // メンバ変数
 	bool isDebugCameraActive_ = false;
 	uint32_t textureHandle_ = 0;
 
+	SkyDome* skyDome_ = nullptr;
+	Model* modelSkyDome_ = nullptr;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
