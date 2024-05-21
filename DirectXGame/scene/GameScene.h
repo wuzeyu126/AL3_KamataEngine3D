@@ -15,6 +15,7 @@
 #include "AxisIndicator.h"
 #include <cassert>
 #include "SkyDome.h"
+#include "MapChipField.h"
 
 /// <summary>
 /// ゲームシーン
@@ -47,6 +48,11 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// block
+	/// </summary>
+	void GenerateBlocks();
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -64,6 +70,8 @@ private: // メンバ変数
 
 	SkyDome* skyDome_ = nullptr;
 	Model* modelSkyDome_ = nullptr;
+
+	MapChipField* mapChipField_;
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
