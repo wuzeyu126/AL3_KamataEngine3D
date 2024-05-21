@@ -44,7 +44,6 @@ void GameScene::Initialize() {
 	const float kBlockWidth = 2.0f;
 	const float kBlockHeight = 2.0f;
 
-
 	modelSkyDome_ = Model::CreateFromOBJ("skyDome", true);
 	skyDome_ = new SkyDome;
 	skyDome_->Initialize(modelSkyDome_, &viewProjection_);
