@@ -20,6 +20,7 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete skyDome_;
 	delete mapChipField_;
+	delete player_;
 }
 
 void GameScene::Initialize() {
@@ -30,19 +31,12 @@ void GameScene::Initialize() {
 	modelBlock_ = Model::Create();
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
-	textureHandle_ = TextureManager::Load("sample.png");
-
-	// PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection_);
+	textureHandle_ = TextureManager::Load("uvChecker.png");
 
 	debugCamera_ = new DebugCamera(1024, 720);
 
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
-
-	/*const uint32_t kNumBlockVirtical = 10;
-	const uint32_t kNumBlockHorizontal = 20;
-	const float kBlockWidth = 2.0f;
-	const float kBlockHeight = 2.0f;*/
 
 	modelSkyDome_ = Model::CreateFromOBJ("skyDome", true);
 	skyDome_ = new SkyDome;
@@ -51,32 +45,10 @@ void GameScene::Initialize() {
 	mapChipField_ = new MapChipField;
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 
-	/*worldTransformBlocks_.resize(kNumBlockVirtical);
-	for (uint32_t i = 0; i < kNumBlockVirtical; ++i) {
-		worldTransformBlocks_[i].resize(kNumBlockHorizontal);
-	}
-
-	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
-		if (i % 2 == 1) {
-			for (uint32_t j = 0; j < kNumBlockHorizontal; j++) {
-				if (j % 2 == 0) {
-					worldTransformBlocks_[i][j] = new WorldTransform();
-					worldTransformBlocks_[i][j]->Initialize();
-					worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
-					worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
-				}
-			}
-		} else if (i % 2 == 0) {
-			for (uint32_t j = 0; j < kNumBlockHorizontal; j++) {
-				if (j % 2 == 1) {
-					worldTransformBlocks_[i][j] = new WorldTransform();
-					worldTransformBlocks_[i][j]->Initialize();
-					worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
-					worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
-				}
-			}
-		}
-	}*/
+	player_ = new Player();
+	modelPlayer_ = Model::Create();
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
+	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition, textureHandle_);
 
 	GenerateBlocks();
 }
@@ -106,6 +78,7 @@ void GameScene::Update() {
 	}
 
 	skyDome_->Update();
+	player_->Update();
 }
 
 void GameScene::Draw() {
@@ -144,6 +117,7 @@ void GameScene::Draw() {
 	}
 
 	skyDome_->Draw();
+	player_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
