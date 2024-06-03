@@ -51,6 +51,14 @@ void GameScene::Initialize() {
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition, textureHandle_);
 
 	GenerateBlocks();
+
+
+	movableArea_ = {10, 100, 5, 50};
+	cameraController_ = new CameraController;
+	cameraController_->Initialize();
+	cameraController_->SetTarget(player_);
+	cameraController_->SetMoveableArea(movableArea_);
+	cameraController_->Reset();
 }
 
 void GameScene::Update() {
@@ -79,6 +87,12 @@ void GameScene::Update() {
 
 	skyDome_->Update();
 	player_->Update();
+
+
+	cameraController_->Update();
+	viewProjection_.matView = cameraController_->GetViewProjection().matView;
+	viewProjection_.matProjection = cameraController_->GetViewProjection().matProjection;
+	viewProjection_.TransferMatrix();
 }
 
 void GameScene::Draw() {

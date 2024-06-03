@@ -75,7 +75,7 @@ void Player::Update() {
 	if (velocity_.y < 0.0f) {
 		if(worldTransform_.translation_.y <= 1.0f) {
 			landing = true;
-		}
+		}         
 	}
 
 	if (onGround_) {
@@ -93,3 +93,5 @@ void Player::Update() {
 }
 
 void Player::Draw() { model_->Draw(worldTransform_, *viewProjection_, textureHandle_); }
+
+WorldTransform& Player::GetWorldTransform() { return worldTransform_; }

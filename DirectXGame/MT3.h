@@ -492,3 +492,10 @@ static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, c
 	result = MultiplyMatrix4x4(MakeScaleMatrix(scale), MultiplyMatrix4x4(rotateMatrix(rotate), MakeTranslateMatrix(translate)));
 	return result;
 }
+
+/// <summary>
+/// 线性插值
+/// </summary>
+/// <param name="a"></param>
+/// <param name="b"></param>
+static inline float Lerp(const float& a, const float& b, float t) { return t * a + (1.0f - t) * b; }
