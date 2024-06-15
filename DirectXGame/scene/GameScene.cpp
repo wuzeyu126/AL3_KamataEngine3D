@@ -49,6 +49,7 @@ void GameScene::Initialize() {
 	modelPlayer_ = Model::Create();
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition, textureHandle_);
+	player_->SetMapChipField(mapChipField_);
 
 	GenerateBlocks();
 
