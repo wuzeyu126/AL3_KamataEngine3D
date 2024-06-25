@@ -41,11 +41,25 @@ static const int kRowHeight = 20;
 /// <param name="v1"></param>
 /// <param name="v2"></param>
 /// <returns></returns>
-static Vector3 Add(const Vector3& v1, const Vector3& v2) {
+static Vector3 AddV3(const Vector3& v1, const Vector3& v2) {
 	Vector3 result;
 	result.x = v1.x + v2.x;
 	result.y = v1.y + v2.y;
 	result.z = v1.z + v2.z;
+	return result;
+}
+
+/// <summary>
+/// 三维向量的减法
+/// </summary>
+/// <param name="v1"></param>
+/// <param name="v2"></param>
+/// <returns></returns>
+static Vector3 MinusV3(const Vector3& v1, const Vector3& v2) {
+	Vector3 result;
+	result.x = v1.x - v2.x;
+	result.y = v1.y - v2.y;
+	result.z = v1.z - v2.z;
 	return result;
 }
 
@@ -155,7 +169,7 @@ static struct Vector3 Normalize(const struct Vector3& v) {
 /// <param name="m1"></param>
 /// <param name="m2"></param>
 /// <returns></returns>
-static Matrix4x4 Add(const Matrix4x4& m1, const Matrix4x4& m2) {
+static Matrix4x4 AddM4(const Matrix4x4& m1, const Matrix4x4& m2) {
 	Matrix4x4 result;
 	for (int i = 0; i < 4; ++i) {
 		for (int j = 0; j < 4; ++j) {
