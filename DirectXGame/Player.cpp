@@ -19,9 +19,9 @@ void Player::Update() {
 	velocity_ = AddV3(velocity_, {0.0f, -kGravityAcceleration, 0.0f});
 	velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 
-	if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
+	if (Input::GetInstance()->PushKey(DIK_D) || Input::GetInstance()->PushKey(DIK_A)) {
 		Vector3 acceleration = {};
-		if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+		if (Input::GetInstance()->PushKey(DIK_D)) {
 			if (lrDirection_ != LRDirection::kRight) {
 				lrDirection_ = LRDirection::kRight;
 				turnFirstRotation_ = std::numbers::pi_v<float>;
@@ -31,7 +31,7 @@ void Player::Update() {
 				velocity_.x *= (1.0f - kAttenuation);
 			}
 			acceleration.x += kAcceleration;
-		} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+		} else if (Input::GetInstance()->PushKey(DIK_A)) {
 			if (lrDirection_ != LRDirection::kLeft) {
 				lrDirection_ = LRDirection::kLeft;
 				turnFirstRotation_ = 0.0f;
@@ -49,7 +49,7 @@ void Player::Update() {
 	}
 	if (onGround_) {
 
-		if (Input::GetInstance()->PushKey(DIK_UP)) {
+		if (Input::GetInstance()->PushKey(DIK_SPACE)) {
 			velocity_ = AddV3(velocity_, {0.0f, kJumpAcceleration, 0.0f});
 		}
 	}
