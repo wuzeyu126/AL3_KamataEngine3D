@@ -5,10 +5,6 @@
 #include <vector>
 #include "CameraController.h"
 
-struct IndexSet {
-	uint32_t xIndex;
-	uint32_t yIndex;
-};
 
 enum class MapChipType { kBlank, kBlock };
 
@@ -19,6 +15,17 @@ struct MapChipData {
 
 class MapChipField {
 public:
+	struct IndexSet {
+		uint32_t xIndex;
+		uint32_t yIndex;
+	};
+
+	struct Rect {
+		float left;
+		float right;
+		float bottom;
+		float top;
+	};
 	
 	void ResteMapChipData();
 	void LoadMapChipCsv(const std::string& filePath);
@@ -29,7 +36,7 @@ public:
 
 	IndexSet GetMapChipIndexSetByPosition(const Vector3& position);
 
-	Rect GetRectByIndex(uint32_t xIndex, uint32_t yIndex);
+	Rect GetRectByIndexSet(uint32_t xIndex, uint32_t yIndex);
 
 private:
 	static inline const float kBlockWidth = 2.0f;

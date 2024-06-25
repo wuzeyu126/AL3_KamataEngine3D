@@ -21,6 +21,7 @@ GameScene::~GameScene() {
 	delete skyDome_;
 	delete mapChipField_;
 	delete player_;
+	delete enemy_;
 }
 
 void GameScene::Initialize() {
@@ -31,7 +32,8 @@ void GameScene::Initialize() {
 	modelBlock_ = Model::Create();
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
-	textureHandle_ = TextureManager::Load("uvChecker.png");
+	textureHandleEnemy_ = TextureManager::Load("enemyImage.png");
+	textureHandlePlayer_ = TextureManager::Load("uvChecker.png");
 
 	debugCamera_ = new DebugCamera(1024, 720);
 
@@ -48,8 +50,18 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	modelPlayer_ = Model::Create();
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
-	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition, textureHandle_);
+	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition, textureHandlePlayer_);
 	player_->SetMapChipField(mapChipField_);
+
+	enemy_ = new Enemy();
+	modelEnemy_ = Model::Create();
+	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(5, 18);
+	enemy_->Initialize(modelEnemy_, &viewProjection_, enemyPosition, textureHandleEnemy_);
+	enemy_->SetMapChipField(mapChipField_);
+
+
+
+
 
 	GenerateBlocks();
 
@@ -88,6 +100,7 @@ void GameScene::Update() {
 
 	skyDome_->Update();
 	player_->Update();
+	enemy_->Update();
 
 
 	cameraController_->Update();
@@ -133,6 +146,7 @@ void GameScene::Draw() {
 
 	skyDome_->Draw();
 	player_->Draw();
+	enemy_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

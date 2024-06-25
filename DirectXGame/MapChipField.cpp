@@ -37,7 +37,7 @@ uint32_t MapChipField::GetNunBlockHorizontal() { return kNumBlockHorizontal; }
 
 uint32_t MapChipField::GetNunBlockVirtical() { return kNumBlockVirtical; }
 
-IndexSet MapChipField::GetMapChipIndexSetByPosition(const Vector3& position) { 
+MapChipField::IndexSet MapChipField::GetMapChipIndexSetByPosition(const Vector3& position) { 
 	IndexSet indexSet = {};
 	indexSet.xIndex = static_cast<uint32_t>((position.x + kBlockWidth / 2) / kBlockWidth);
 	indexSet.yIndex = static_cast<uint32_t>(kNumBlockVirtical - ((position.y + kBlockHeight / 2) / kBlockHeight));
@@ -69,13 +69,12 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 	}
 }
 
-Rect MapChipField::GetRectByIndex(uint32_t xIndex, uint32_t yIndex) {
+MapChipField::Rect MapChipField::GetRectByIndexSet(uint32_t xIndex, uint32_t yIndex) {
 	Vector3 center = GetMapChipPositionByIndex(xIndex, yIndex);
-	Rect rect;
-
+	Rect rect = {};
 	rect.left = center.x - kBlockWidth / 2.0f;
+	rect.top = center.y + kBlockHeight / 2.0f;
 	rect.right = center.x + kBlockWidth / 2.0f;
-	rect.top = center.y - kBlockHeight / 2.0f;
-	rect.bottom = center.y + kBlockHeight / 2.0f;
+	rect.bottom = center.y - kBlockHeight / 2.0f;
 	return rect;
 }
