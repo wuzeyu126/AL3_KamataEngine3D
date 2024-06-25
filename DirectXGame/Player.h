@@ -79,7 +79,7 @@ private:
 	Vector3 velocity_ = {};
 
 	static inline const float kAcceleration = 0.01f;
-	static inline const float kAttenuation = 0.08f;
+	static inline const float kAttenuation = 0.2f;
 	static inline const float kLimitRunSpeed = 0.4f;
 
 	LRDirection lrDirection_ = LRDirection::kRight;
