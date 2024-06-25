@@ -12,19 +12,27 @@
 
 class Enemy {
 public:
-	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position, uint32_t textureHandle);
+	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position,uint32_t textHandle);
+
 	void Update();
+
 	void Draw();
-	void SetMapChipField(MapChipField* mapChipField);
 
-private:
+	WorldTransform& GetWorldTransform() { return worldTransform_; }
+
+	private:
 	Model* model_ = nullptr;
-	ViewProjection* viewProjection_ = nullptr;
-	WorldTransform worldTransform_;
 	uint32_t textureHandle_ = 0u;
-	Vector3 velocity_ = {};
 
-	MapChipField* mapChipField_ = nullptr;
+	static inline const float kWalkSpeed = 0.05f;
+	Vector3 velocity_ = {-kWalkSpeed, 0.0f, 0.0f};
+
+	static inline const float kWalkRadianBegin = -1 * std::numbers::pi_v<float>;
+	static inline const float kWalkRadianEnd = 2 * std::numbers::pi_v<float>;
+	static inline const float kWalkRadianTime = 2.0f;
 
 	float walkTimer_ = 0.0f;
+
+	WorldTransform worldTransform_;
+	ViewProjection* viewProjection_ = nullptr;
 };

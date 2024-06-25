@@ -55,16 +55,10 @@ void GameScene::Initialize() {
 
 	enemy_ = new Enemy();
 	modelEnemy_ = Model::Create();
-	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(5, 18);
+	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(15, 18);
 	enemy_->Initialize(modelEnemy_, &viewProjection_, enemyPosition, textureHandleEnemy_);
-	enemy_->SetMapChipField(mapChipField_);
-
-
-
-
-
+	
 	GenerateBlocks();
-
 
 	movableArea_ = {10, 100, 5, 50};
 	cameraController_ = new CameraController;
