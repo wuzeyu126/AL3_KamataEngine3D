@@ -21,7 +21,10 @@ GameScene::~GameScene() {
 	delete skyDome_;
 	delete mapChipField_;
 	delete player_;
-	delete enemy_;
+	for (Enemy* enemy : enemies_) {
+		delete enemy;
+	}
+	enemies_.clear();
 }
 
 void GameScene::Initialize() {
@@ -52,12 +55,15 @@ void GameScene::Initialize() {
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition, textureHandlePlayer_);
 	player_->SetMapChipField(mapChipField_);
-
-	enemy_ = new Enemy();
-	modelEnemy_ = Model::Create();
-	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(15, 18);
-	enemy_->Initialize(modelEnemy_, &viewProjection_, enemyPosition, textureHandleEnemy_);
 	
+	modelEnemy_ = Model::Create();
+	Vector3 enemyPosition[enemyNums];
+	for (uint32_t i = 0; i < enemyNums; ++i) {
+		Enemy* newEnemy = new Enemy();
+		enemyPosition[i] = mapChipField_->GetMapChipPositionByIndex(5 + i, 18 - i * 3);
+		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition[i], textureHandleEnemy_);
+		enemies_.push_back(newEnemy);
+	}
 	GenerateBlocks();
 
 	movableArea_ = {10, 100, 5, 50};
@@ -94,8 +100,13 @@ void GameScene::Update() {
 
 	skyDome_->Update();
 	player_->Update();
-	enemy_->Update();
+	for (Enemy* enemy : enemies_) {
+		enemy->Update();
+	}
 
+
+
+	CheckAllCollisions();
 
 	cameraController_->Update();
 	viewProjection_.matView = cameraController_->GetViewProjection().matView;
@@ -140,7 +151,9 @@ void GameScene::Draw() {
 
 	skyDome_->Draw();
 	player_->Draw();
-	enemy_->Draw();
+	for (Enemy* enemy : enemies_) {
+		enemy->Draw();
+	}
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -179,4 +192,18 @@ void GameScene::GenerateBlocks() {
 			}
 		}
 	}
+}
+
+void GameScene::CheckAllCollisions() {
+#pragma region 玩家和敌人
+	AABB aabb1, aabb2;
+	aabb1 = player_->GetAABB();
+	for (Enemy* enemy : enemies_) {
+		aabb2 = enemy->GetAABB();
+		if (IsCollision(aabb1, aabb2)) {
+			player_->OnCollision(enemy);
+			enemy->OnCollision(player_);
+		}
+	}
+#pragma endregion
 }

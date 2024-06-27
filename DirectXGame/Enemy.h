@@ -10,6 +10,8 @@
 #include <iostream>
 #include <numbers>
 
+class Player;
+
 class Enemy {
 public:
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position,uint32_t textHandle);
@@ -19,6 +21,12 @@ public:
 	void Draw();
 
 	WorldTransform& GetWorldTransform() { return worldTransform_; }
+
+	Vector3 GetWorldPosition();
+
+	AABB GetAABB();
+
+	void OnCollision(const Player* player);
 
 	private:
 	Model* model_ = nullptr;
@@ -35,4 +43,7 @@ public:
 
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_ = nullptr;
+
+	static inline const float kWidth = 2.0f;
+	static inline const float kHeight = 2.0f;
 };

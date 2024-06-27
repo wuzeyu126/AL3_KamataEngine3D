@@ -15,6 +15,7 @@ enum class LRDirection {
 };
 
 class MapChipField;
+class Enemy;
 
 class Player {
 public:
@@ -71,6 +72,13 @@ public:
 	void WallCollision(CollisionMapInfo& info);
 
 	void landingSwitch(CollisionMapInfo& info);
+
+
+	Vector3 GetWorldPosition();
+
+	AABB GetAABB();
+
+	void OnCollision(const Enemy* enemy);
 
 private:
 	uint32_t textureHandle_ = 0u;

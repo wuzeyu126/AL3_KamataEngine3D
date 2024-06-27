@@ -17,6 +17,12 @@
 static const int kColumnWidth = 60;
 static const int kRowHeight = 20;
 
+typedef struct {
+	Vector3 min;
+	Vector3 max;
+} AABB;
+
+
 /// <summary>
 /// ********************************************************************三维向量
 /// </summary>
@@ -513,3 +519,17 @@ static Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, c
 /// <param name="a"></param>
 /// <param name="b"></param>
 static inline float Lerp(const float& a, const float& b, float t) { return t * a + (1.0f - t) * b; }
+
+/// <summary>
+/// aabb判定（方块）
+/// </summary>
+/// <param name="aabb1"></param>
+/// <param name="aabb2"></param>
+/// <returns></returns>
+static bool IsCollision(const AABB& aabb1, const AABB& aabb2) {
+
+	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) && (aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y) && (aabb1.min.z <= aabb2.max.z && aabb1.max.z >= aabb2.min.z)) {
+		return true;
+	}
+	return false;
+}
