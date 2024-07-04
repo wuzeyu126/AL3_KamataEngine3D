@@ -14,6 +14,9 @@ public:
 
 	void Draw();
 
+	bool IsFinished() { return isFinished_; }
+
+
 	private:
 	WorldTransform worldTransform_;
 	ViewProjection* viewProjection_ = nullptr;

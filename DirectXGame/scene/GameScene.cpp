@@ -54,7 +54,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	modelPlayer_ = Model::Create();
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
-	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition, textureHandlePlayer_);
+	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition, textureHandlePlayer_,this);
 	player_->SetMapChipField(mapChipField_);
 	
 	modelEnemy_ = Model::Create();
@@ -77,6 +77,9 @@ void GameScene::Initialize() {
 	modelParticle_ = Model::CreateFromOBJ("particle", true);
 	deathParticles_ = new DeathParticles();
 	deathParticles_->Initialize(modelParticle_, &viewProjection_, playerPosition);
+
+
+	phase_ = Phase::kPlay;
 }
 
 void GameScene::Update() {
@@ -95,33 +98,9 @@ void GameScene::Update() {
 		viewProjection_.UpdateMatrix();
 	}
 
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-			if (!worldTransformBlock)
-				continue;
-			worldTransformBlock->UpdateMatrix();
-		}
-	}
-
-	skyDome_->Update();
-	player_->Update();
-	for (Enemy* enemy : enemies_) {
-		enemy->Update();
-	}
-
-
-
-	CheckAllCollisions();
-
-	cameraController_->Update();
-	viewProjection_.matView = cameraController_->GetViewProjection().matView;
-	viewProjection_.matProjection = cameraController_->GetViewProjection().matProjection;
-	viewProjection_.TransferMatrix();
-
-	if (deathParticles_ != nullptr) {
-		deathParticles_->Update();
-	}
+	ChangePhase();
 }
+
 
 void GameScene::Draw() {
 
@@ -164,7 +143,7 @@ void GameScene::Draw() {
 		enemy->Draw();
 	}
 
-	if (deathParticles_ != nullptr) {
+	if (deathParticles_ != nullptr && isPlayerDead_) {
 		deathParticles_->Draw();
 	}
 
@@ -219,4 +198,63 @@ void GameScene::CheckAllCollisions() {
 		}
 	}
 #pragma endregion
+}
+
+
+void GameScene::ChangePhase() {
+	skyDome_->Update();
+
+	//=======================地图块更新================
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+			if (!worldTransformBlock)
+				continue;
+			worldTransformBlock->UpdateMatrix();
+		}
+	}
+
+	
+	for (Enemy* enemy : enemies_) {
+		enemy->Update();
+	}
+
+	//=======================追踪相机更新================
+	cameraController_->Update();
+
+	//===========================阶段=============================
+
+	switch (phase_) {
+
+		// 游玩状态
+	case Phase::kPlay:
+		//=======================Player更新================
+		player_->Update();
+
+		//=======================碰撞更新================
+		// all collisions check
+		CheckAllCollisions();
+
+		//=======================死亡判定================
+		if (isPlayerDead_) {
+			const Vector3& deathPosition = player_->GetWorldTransform().translation_;
+			deathParticles_->Initialize(modelParticle_, &viewProjection_, deathPosition);
+			phase_ = Phase::kDeath;
+		}
+		break;
+
+		// 玩家死亡
+	case Phase::kDeath:
+
+		//=======================粒子更新================
+
+		if (deathParticles_ != nullptr) {
+			deathParticles_->Update();
+		}
+
+		if (deathParticles_ && deathParticles_->IsFinished()) {
+			finished_ = true;
+		}
+
+		break;
+	}
 }

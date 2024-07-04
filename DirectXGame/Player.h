@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cassert>
 #include <numbers>
+#include "GameScene.h"
 
 enum class LRDirection {
 	kRight,
@@ -16,6 +17,7 @@ enum class LRDirection {
 
 class MapChipField;
 class Enemy;
+class GameScene;
 
 class Player {
 public:
@@ -37,7 +39,7 @@ public:
 	Player();
 	~Player();
 
-	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position, uint32_t textureHandle);
+	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position, uint32_t textureHandle, GameScene* gameScene);
 
 	void Update();
 
@@ -81,6 +83,7 @@ public:
 	void OnCollision(const Enemy* enemy);
 
 private:
+	GameScene* gameScene_;
 	uint32_t textureHandle_ = 0u;
 	Model* model_ = nullptr;
 
@@ -114,4 +117,7 @@ private:
 
 	static inline const float kAttenuationLanding = 0.05f;
 	static inline const float kAttenuationWall = 0.05f;
+
+
+	
 };

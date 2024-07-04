@@ -59,6 +59,18 @@ public: // メンバ関数
 
 	void CheckAllCollisions();
 
+	void ChangePhase();
+
+	bool IsFinished() const { return finished_; }
+
+
+	bool IsDead() { return isPlayerDead_; }
+
+	bool SetIsDead(bool value) {
+		isPlayerDead_ = value;
+		return isPlayerDead_;
+	}
+
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
@@ -93,6 +105,17 @@ private: // メンバ変数
 
 	DeathParticles* deathParticles_ = nullptr;
 	Model* modelParticle_ = nullptr;
+
+
+
+	enum class Phase {
+		kPlay,
+		kDeath,
+	};
+	Phase phase_;
+
+	bool finished_ = false;
+	bool isPlayerDead_ = false;
 
 	/// <summary>
 	/// ゲームシーン用

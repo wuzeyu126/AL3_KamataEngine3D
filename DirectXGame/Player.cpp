@@ -1,10 +1,11 @@
 #include "Player.h"
 
+
 Player::Player() {}
 
 Player::~Player() {}
 
-void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position, uint32_t textureHandle) {
+void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position, uint32_t textureHandle, GameScene* gameScene) {
 	assert(model);
 	model_ = model;
 	worldTransform_.Initialize();
@@ -12,6 +13,7 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 	viewProjection_ = viewProjection;
 	textureHandle_ = textureHandle;
+	gameScene_ = gameScene;
 }
 
 void Player::Update() {
@@ -335,7 +337,5 @@ AABB Player::GetAABB() {
 void Player::OnCollision(const Enemy* enemy) {
 	(void)enemy;
 
-	velocity_.x += 0.0f;
-	velocity_.y += 2.0f;
-	velocity_.z += 0.0f;
+	gameScene_->SetIsDead(true);
 }
