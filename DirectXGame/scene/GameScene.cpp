@@ -25,6 +25,7 @@ GameScene::~GameScene() {
 		delete enemy;
 	}
 	enemies_.clear();
+	delete deathParticles_;
 }
 
 void GameScene::Initialize() {
@@ -72,6 +73,10 @@ void GameScene::Initialize() {
 	cameraController_->SetTarget(player_);
 	cameraController_->SetMoveableArea(movableArea_);
 	cameraController_->Reset();
+
+	modelParticle_ = Model::CreateFromOBJ("particle", true);
+	deathParticles_ = new DeathParticles();
+	deathParticles_->Initialize(modelParticle_, &viewProjection_, playerPosition);
 }
 
 void GameScene::Update() {
@@ -112,6 +117,10 @@ void GameScene::Update() {
 	viewProjection_.matView = cameraController_->GetViewProjection().matView;
 	viewProjection_.matProjection = cameraController_->GetViewProjection().matProjection;
 	viewProjection_.TransferMatrix();
+
+	if (deathParticles_ != nullptr) {
+		deathParticles_->Update();
+	}
 }
 
 void GameScene::Draw() {
@@ -153,6 +162,10 @@ void GameScene::Draw() {
 	player_->Draw();
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
+	}
+
+	if (deathParticles_ != nullptr) {
+		deathParticles_->Draw();
 	}
 
 	// 3Dオブジェクト描画後処理

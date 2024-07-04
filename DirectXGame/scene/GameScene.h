@@ -19,6 +19,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "CameraController.h"
+#include "DeathParticles.h"
 
 /// <summary>
 /// ゲームシーン
@@ -88,6 +89,10 @@ private: // メンバ変数
 
 	CameraController* cameraController_ = nullptr;
 	Rect movableArea_ = {};
+
+
+	DeathParticles* deathParticles_ = nullptr;
+	Model* modelParticle_ = nullptr;
 
 	/// <summary>
 	/// ゲームシーン用
