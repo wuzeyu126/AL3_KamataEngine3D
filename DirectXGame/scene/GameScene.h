@@ -100,7 +100,7 @@ private: // メンバ変数
 	static inline const uint32_t enemyNums = 3;
 
 	CameraController* cameraController_ = nullptr;
-	Rect movableArea_ = {};
+	//Rect movableArea_ = {};
 
 
 	DeathParticles* deathParticles_ = nullptr;

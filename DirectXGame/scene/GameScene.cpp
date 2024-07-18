@@ -26,9 +26,13 @@ GameScene::~GameScene() {
 	}
 	enemies_.clear();
 	delete deathParticles_;
+	delete cameraController_;
 }
 
 void GameScene::Initialize() {
+
+	phase_ = Phase::kPlay;
+	isDebugCameraActive_ = false;
 
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
@@ -61,17 +65,28 @@ void GameScene::Initialize() {
 	Vector3 enemyPosition[enemyNums];
 	for (uint32_t i = 0; i < enemyNums; ++i) {
 		Enemy* newEnemy = new Enemy();
-		enemyPosition[i] = mapChipField_->GetMapChipPositionByIndex(5 + i, 18 - i * 3);
+		enemyPosition[i] = mapChipField_->GetMapChipPositionByIndex(30 + i, 18 - i * 3);
 		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition[i], textureHandleEnemy_);
 		enemies_.push_back(newEnemy);
 	}
 	GenerateBlocks();
 
-	movableArea_ = {10, 100, 5, 50};
-	cameraController_ = new CameraController;
-	cameraController_->Initialize();
+	cameraController_ = new CameraController();
+	cameraController_->Initalize(&viewProjection_);
+
+	
+	CameraController::Rect cameraArea;
+
+	cameraArea.left = 10.0f;
+	cameraArea.right = 100.0f;
+	cameraArea.bottom = 10.0f;
+	cameraArea.top = 50.0f;
+
+	// 设置相机的可移动区域
+	cameraController_->SetMoveableArea(cameraArea);
+	//====================================================
+
 	cameraController_->SetTarget(player_);
-	cameraController_->SetMoveableArea(movableArea_);
 	cameraController_->Reset();
 
 	modelParticle_ = Model::CreateFromOBJ("particle", true);
@@ -79,7 +94,7 @@ void GameScene::Initialize() {
 	deathParticles_->Initialize(modelParticle_, &viewProjection_, playerPosition);
 
 
-	phase_ = Phase::kPlay;
+	
 }
 
 void GameScene::Update() {
@@ -88,17 +103,17 @@ void GameScene::Update() {
 		isDebugCameraActive_ = true;
 	}
 #endif 
-
-	if (isDebugCameraActive_) {
+	ChangePhase();
+	/*if (isDebugCameraActive_) {
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
 		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
 		viewProjection_.TransferMatrix();
 	} else {
 		viewProjection_.UpdateMatrix();
-	}
+	}*/
 
-	ChangePhase();
+	
 }
 
 
@@ -138,7 +153,10 @@ void GameScene::Draw() {
 	}
 
 	skyDome_->Draw();
-	player_->Draw();
+	if (!isPlayerDead_) {
+		player_->Draw();
+	}
+	
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
 	}
