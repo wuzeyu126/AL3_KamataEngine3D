@@ -41,12 +41,12 @@ void GameScene::Initialize() {
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 	textureHandleEnemy_ = TextureManager::Load("enemyImage.png");
-	textureHandlePlayer_ = TextureManager::Load("uvChecker.png");
+	textureHandlePlayer_ = TextureManager::Load("tex.png");
 
 	debugCamera_ = new DebugCamera(1024, 720);
 
-	AxisIndicator::GetInstance()->SetVisible(true);
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
+	/*AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());*/
 
 	modelSkyDome_ = Model::CreateFromOBJ("skyDome", true);
 	skyDome_ = new SkyDome;
@@ -56,8 +56,8 @@ void GameScene::Initialize() {
 	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
 
 	player_ = new Player();
-	modelPlayer_ = Model::Create();
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
+	modelPlayer_ = Model::CreateFromOBJ("float_Head", true);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 99);
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition, textureHandlePlayer_,this);
 	player_->SetMapChipField(mapChipField_);
 	
@@ -65,7 +65,7 @@ void GameScene::Initialize() {
 	Vector3 enemyPosition[enemyNums];
 	for (uint32_t i = 0; i < enemyNums; ++i) {
 		Enemy* newEnemy = new Enemy();
-		enemyPosition[i] = mapChipField_->GetMapChipPositionByIndex(30 + i, 18 - i * 3);
+		enemyPosition[i] = mapChipField_->GetMapChipPositionByIndex(98 - i,1- i * 3);
 		newEnemy->Initialize(modelEnemy_, &viewProjection_, enemyPosition[i], textureHandleEnemy_);
 		enemies_.push_back(newEnemy);
 	}
@@ -77,10 +77,10 @@ void GameScene::Initialize() {
 	
 	CameraController::Rect cameraArea;
 
-	cameraArea.left = 10.0f;
-	cameraArea.right = 100.0f;
-	cameraArea.bottom = 10.0f;
-	cameraArea.top = 50.0f;
+	cameraArea.left = -50.0f;
+	cameraArea.right = 300.0f;
+	cameraArea.bottom = -50.0f;
+	cameraArea.top = 300.0f;
 
 	// 设置相机的可移动区域
 	cameraController_->SetMoveableArea(cameraArea);
@@ -157,9 +157,9 @@ void GameScene::Draw() {
 		player_->Draw();
 	}
 	
-	for (Enemy* enemy : enemies_) {
+	/*for (Enemy* enemy : enemies_) {
 		enemy->Draw();
-	}
+	}*/
 
 	if (deathParticles_ != nullptr && isPlayerDead_) {
 		deathParticles_->Draw();
@@ -252,13 +252,19 @@ void GameScene::ChangePhase() {
 		// all collisions check
 		CheckAllCollisions();
 
-		//=======================死亡判定================
+	//=======================死亡判定================
 		if (isPlayerDead_) {
 			const Vector3& deathPosition = player_->GetWorldTransform().translation_;
 			deathParticles_->Initialize(modelParticle_, &viewProjection_, deathPosition);
 			phase_ = Phase::kDeath;
 		}
+		
+		
+
+
 		break;
+
+
 
 		// 玩家死亡
 	case Phase::kDeath:

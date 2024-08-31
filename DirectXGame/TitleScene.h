@@ -9,8 +9,6 @@
 
 class TitleScene {
 private:
-	bool finished_ = false;
-
 	DirectXCommon* dxCommon_ = nullptr;
 
 	Model* modelTitle_ = nullptr;
@@ -18,6 +16,7 @@ private:
 
 	titleMoji* moji_ = nullptr;
 	Player* player_ = nullptr;
+	bool finished_ = false;
 
 public:
 	TitleScene();

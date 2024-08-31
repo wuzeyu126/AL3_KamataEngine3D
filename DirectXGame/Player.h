@@ -101,13 +101,13 @@ private:
 	static inline const float kTimeTurn = 0.3f;
 	bool onGround_ = true;
 	static inline const float kGravityAcceleration = 0.01f;
-	static inline const float kLimitFallSpeed = 0.35f;
-	static inline const float kJumpAcceleration = 0.5f;
+	static inline const float kLimitFallSpeed = 0.3f;
+	static inline const float kJumpAcceleration = 1.5f;
 
 	MapChipField* mapChipField_ = nullptr;
 
-	static inline const float kWidth = 1.99f;
-	static inline const float kHeight = 1.99f;
+	static inline const float kWidth = 1.4f;
+	static inline const float kHeight = 1.4f;
 	static inline const float kBlank = 0.01f;
 
 	WorldTransform worldTransform_;

@@ -33,7 +33,7 @@ public:
 	uint32_t textureHandle_ = 0u;
 
 	static inline const float kWalkSpeed = 0.05f;
-	Vector3 velocity_ = {-kWalkSpeed, 0.0f, 0.0f};
+	Vector3 velocity_ = {0.0f, 0.0f, 0.0f};
 
 	static inline const float kWalkRadianBegin = -1 * std::numbers::pi_v<float>;
 	static inline const float kWalkRadianEnd = 2 * std::numbers::pi_v<float>;

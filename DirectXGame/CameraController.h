@@ -45,10 +45,10 @@ private:
 	// 获取player对象
 	Player* target_ = nullptr;
 	// 追従対象とカメラの座標の差
-	Vector3 targetOffset_ = {0.0f, 0.0f, -30.0f};
+	Vector3 targetOffset_ = {10.0f, 10.0f, -35.0f};
 
 	// カメラ移動範囲
-	Rect moveableArea_ = {100, 100, 100, 100};
+	Rect moveableArea_ = {1000, 1000, 1000, 1000};
 
 	// 座標補間
 	Vector3 endPosition;
@@ -58,5 +58,5 @@ private:
 	static inline const float kVelocityBias = 15.0f;
 
 	// 追従対象画面内
-	static inline const Rect margin = {-100, 100, -100, 100};
+	static inline const Rect margin = {-1000, 1000, -1000, 1000};
 };

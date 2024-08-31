@@ -20,6 +20,7 @@
 #include "Enemy.h"
 #include "CameraController.h"
 #include "DeathParticles.h"
+#include "TitleScene.h"
 
 /// <summary>
 /// ゲームシーン
@@ -97,7 +98,7 @@ private: // メンバ変数
 
 	Model* modelEnemy_ = nullptr;
 	std::list<Enemy*> enemies_;
-	static inline const uint32_t enemyNums = 3;
+	static inline const uint32_t enemyNums = 1;
 
 	CameraController* cameraController_ = nullptr;
 	//Rect movableArea_ = {};
